@@ -1,0 +1,18 @@
+---
+import { Image } from "astro:assets"
+import Markdoc from "@markdoc/markdoc";
+import {formatDate} from "../../utils/date";
+const { article } = Astro.props;
+const chapeau = Markdoc.renderers.html(article.fields["Chapeau"]);
+---
+
+<article class="flex">
+    <div class="w-full max-w-[370px] aspect-video overflow-hidden">
+        <Image class="object-cover w-full h-full" src={article.fields.Illustration[0].url} alt=""  width={article.fields.Illustration[0].width} height={article.fields.Illustration[0].height} />
+    </div>
+  <header class="ml-6">
+    <p class="text-sm">{formatDate(article.fields["Date de publication programmée"])}</p>
+      <a href={`/publications/${article.fields["slug"]}/${article.id}`} ><h2 class="font-medium text-xl mb-2">{ article.fields.Titre }</h2></a>
+      <p>{ chapeau }</p>
+  </header>
+</article>

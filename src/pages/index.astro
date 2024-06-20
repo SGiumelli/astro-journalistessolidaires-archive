@@ -1,0 +1,48 @@
+---
+import {fetchArticles} from "../utils/airtable";
+import FeaturedArticle from "../components/home/FeaturedArticle.astro";
+import HomeArticle from "../components/home/HomeArticle.astro";
+import OpenNewsroomBanner from "../components/home/OpenNewsroomBanner.astro";
+const articles = await fetchArticles()
+
+// first 2 articles
+const featuredArticles = articles.slice(0, 2)
+// other articles
+const otherArticles = articles.slice(2)
+---
+
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+
+	<div class="container mx-auto">
+		<h1 class="text-5xl">Astro</h1>
+		Liste
+		<h2 class="text-5xl tracking-tight font-bold text-center mb-12">Les derniers sujets traités</h2>
+
+		<div class="grid grid-cols-2 gap-6">
+			{featuredArticles.map((article) => (
+				<FeaturedArticle article={article} />
+			))}
+		</div>
+
+		<div class="mt-6 grid grid-cols-1 gap-6">
+			{
+				otherArticles.map((article) => (
+					<HomeArticle article={article} />
+				))
+			}
+		</div>
+
+	</div>
+
+	<OpenNewsroomBanner />
+
+	</body>
+</html>

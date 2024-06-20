@@ -1,0 +1,44 @@
+---
+import {fetchAllArticles} from "../../../utils/airtable";
+import markdownit from "markdown-it";
+import JsLayout from "../../../layouts/JsLayout.astro";
+
+export async function getStaticPaths(){
+    const allArticles = await fetchAllArticles()
+
+    const paths = allArticles.map(article => {
+        return {
+            params: {
+                slug: article.fields.slug,
+                id: article.id
+            },
+            props: article,
+        }
+    })
+
+    //console.log( paths)
+
+    return paths
+}
+
+const { slug, id } = Astro.params
+const article = Astro.props
+//console.log(article)
+
+const md = markdownit({
+    html: true,
+    linkify: true,
+    typographer: true
+})
+
+
+const html = md.render(article.fields["Corps_de_texte"]);
+
+---
+
+<JsLayout title={article.fields["Titre"]}>
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center my-8" content={ article.fields.Titre } />
+        <div class="prose" set:html={html} />
+    </div>
+</JsLayout>
